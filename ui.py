@@ -55,63 +55,6 @@ class StreamlitUI:
                 st.session_state.error = f"Terjadi kesalahan saat memproses ringkasan: {str(e)}"
                 st.error(st.session_state.error)
 
-"""
-Nama File: ui.py
-Deskripsi: Kelas StreamlitUI (View).
-Bertanggung jawab untuk merender semua komponen antarmuka (UI) 
-dan menangkap interaksi pengguna. Sesuai Tabel IV-12, No. 2.
-"""
-
-import streamlit as st
-from handler import SistemHandler
-import time
-
-class StreamlitUI:
-    def __init__(self):
-        # Inisialisasi handler sebagai atribut, sesuai Class Diagram
-        # Ini akan otomatis menginisialisasi semua kelas lain di backend
-        if "handler" not in st.session_state:
-            st.session_state.handler = SistemHandler()
-            print("SistemHandler diinisialisasi")
-
-        # Inisialisasi session state untuk menyimpan input dan output
-        if "teks_input" not in st.session_state:
-            st.session_state.teks_input = ""
-        if "teks_output" not in st.session_state:
-            st.session_state.teks_output = ""
-        if "info_proses" not in st.session_state:
-            st.session_state.info_proses = ""
-        if "error" not in st.session_state:
-            st.session_state.error = ""
-        
-        # Ambil handler dari session state
-        self.handler = st.session_state.handler
-
-    def _handle_tombol_summarize(self):
-        # Method ini dipanggil saat tombol 'Summarize' ditekan
-        self.handler.teks_input_saat_ini = st.session_state.teks_input
-        st.session_state.teks_output = ""
-        st.session_state.info_proses = ""
-        st.session_state.error = ""
-        
-        # Menampilkan indikator loading (sesuai Skenario IV-9)
-        with st.spinner("Sedang meringkas... Silakan tunggu."):
-            try:
-                start_time = time.time()
-                # Panggil handler untuk menjalankan peringkasan
-                hasil, info = self.handler.jalankan_peringkasan()
-                end_time = time.time()
-                
-                waktu_proses = end_time - start_time
-                
-                st.session_state.teks_output = hasil
-                st.session_state.info_proses = f"Ringkasan dihasilkan dalam {waktu_proses:.2f} detik. {info}"
-            
-            except Exception as e:
-                # Menampilkan pesan error (sesuai Skenario IV-9, Alternatif 2b)
-                st.session_state.error = f"Terjadi kesalahan saat memproses ringkasan: {str(e)}"
-                st.error(st.session_state.error)
-
     def _handle_upload_pdf(self, file_pdf):
         # Method ini dipanggil saat file PDF di-upload
         st.session_state.error = ""
