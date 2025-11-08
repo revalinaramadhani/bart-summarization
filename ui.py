@@ -115,11 +115,11 @@ class StreamlitUI:
         
         # Gunakan st.session_state.teks_input sebagai value dari text_area
         # Ini penting agar text_area bisa di-update oleh proses upload PDF
-        teks_area = st.text_area(
+        # Cukup 1 baris ini saja
+        st.text_area(
             "Ketik atau tempel (paste) teks berita Anda di sini...",
-            value=st.session_state.teks_input,
             height=300,
-            # Kita beri 'key' agar bisa diakses, tapi callback 'on_change' lebih baik
+            key="teks_input"  # <-- Ini adalah kuncinya!
         )
         
         # Update session state setiap kali user mengetik
