@@ -11,7 +11,7 @@ from transformers import BartTokenizer, BartForConditionalGeneration
 import torch
 import os
 
-@st.cache_resource
+
 def load_model_and_tokenizer():
     """
     Load model dan tokenizer langsung dari direktori saat ini (.)
