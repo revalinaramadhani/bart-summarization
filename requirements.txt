@@ -1,8 +1,5 @@
 streamlit
-transformers==4.31.0
+transformers
 torch
-accelerate==0.30.0
-evaluate
-rouge_score
-datasets==2.18.0
+sentencepiece
 pypdf
