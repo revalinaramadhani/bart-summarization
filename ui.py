@@ -103,22 +103,17 @@ class StreamlitUI:
 
         st.subheader("Metode Input 1 : Input Teks Langsung")
         
-        # --- [PERBAIKAN TEPAT ADA DI SINI] ---
-        # Kita hanya menggunakan 'key'. Streamlit akan menangani sisanya.
-        # 'key' ini menghubungkan text_area langsung ke st.session_state.teks_input
         st.text_area(
             "Ketik atau tempel (paste) teks berita Anda di sini...",
             height=300,
             key="teks_input" # Ini adalah satu-satunya 'key' yang benar
         )
         
-        # Kita BISA hitung panjang teks, tapi kita perlu pastikan state ada
         panjang_teks = len(st.session_state.teks_input.split())
         st.caption(f"Estimasi: {panjang_teks} kata. (Maksimal ~512 token, teks akan dipotong otomatis)")
 
         st.subheader("Metode Input 2 : Upload File PDF")
         
-        # --- [PERBAIKAN KEDUA ADA DI SINI] ---
         st.file_uploader(
             "Upload PDF", 
             type=["pdf"], 
@@ -128,12 +123,16 @@ class StreamlitUI:
 
         st.divider()
 
+        # --- [ BARIS DEBUG DITAMBAHKAN DI SINI ] ---
+        # Baris ini akan memberitahu kita APA SEBENARNYA isi state 'teks_input'
+        st.write(f"DEBUG: Isi 'teks_input' saat ini adalah: '{st.session_state.teks_input}'")
+        # --- [ AKHIR BARIS DEBUG ] ---
+
+
         # --- Bagian 3: Tombol Aksi ---
         col1, col2, col_spacer = st.columns([1, 1, 5])
 
         with col1:
-            # Logika ini sekarang akan bekerja karena 'st.session_state.teks_input'
-            # akan diisi dengan benar oleh text_area ATAU pdf_uploader
             is_disabled = st.session_state.teks_input == ""
             st.button(
                 "Summarize", 
