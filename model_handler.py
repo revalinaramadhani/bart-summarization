@@ -31,7 +31,7 @@ def load_model_and_tokenizer():
     except Exception as e:
         st.error(
             f"Gagal memuat model. Pastikan seluruh file model "
-            f(pytorch_model.bin, config.json, tokenizer.json, dll.) "
+            f"(pytorch_model.bin, config.json, tokenizer.json, dll.) "
             f"berada di direktori yang sama dengan model_handler.py.\nError: {e}"
         )
         return None, None
