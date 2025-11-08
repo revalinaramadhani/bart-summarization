@@ -119,7 +119,6 @@ class StreamlitUI:
             "Ketik atau tempel (paste) teks berita Anda di sini...",
             value=st.session_state.teks_input,
             height=300,
-            key="input_area" 
             # Kita beri 'key' agar bisa diakses, tapi callback 'on_change' lebih baik
         )
         
