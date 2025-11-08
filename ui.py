@@ -31,29 +31,44 @@ class StreamlitUI:
         self.handler = st.session_state.handler
 
     def _handle_tombol_summarize(self):
+def _handle_tombol_summarize(self):
         # Method ini dipanggil saat tombol 'Summarize' ditekan
         self.handler.teks_input_saat_ini = st.session_state.teks_input
         st.session_state.teks_output = ""
         st.session_state.info_proses = ""
         st.session_state.error = ""
         
-        # Menampilkan indikator loading (sesuai Skenario IV-9)
-        with st.spinner("Sedang meringkas... Silakan tunggu."):
-            try:
-                start_time = time.time()
-                # Panggil handler untuk menjalankan peringkasan
-                hasil, info = self.handler.jalankan_peringkasan()
-                end_time = time.time()
-                
-                waktu_proses = end_time - start_time
-                
-                st.session_state.teks_output = hasil
-                st.session_state.info_proses = f"Ringkasan dihasilkan dalam {waktu_proses:.2f} detik. {info}"
+        # --- PERUBAHAN DIMULAI DI SINI ---
+        # Hapus blok 'with st.spinner(...)' dan ganti dengan ini:
+
+        # 1. Buat sebuah "wadah" kosong
+        loading_placeholder = st.empty()
+        
+        try:
+            # 2. Isi wadah itu dengan pesan loading
+            # Kita bisa pakai st.info() atau st.warning() agar lebih terlihat
+            loading_placeholder.info("⏳ Sedang meringkas... Silakan tunggu.")
             
-            except Exception as e:
-                # Menampilkan pesan error (sesuai Skenario IV-9, Alternatif 2b)
-                st.session_state.error = f"Terjadi kesalahan saat memproses ringkasan: {str(e)}"
-                st.error(st.session_state.error)
+            start_time = time.time()
+            # Panggil handler untuk menjalankan peringkasan
+            hasil, info = self.handler.jalankan_pering_kasan()
+            end_time = time.time()
+            
+            # 3. Kosongkan kembali wadah tadi (menghilangkan pesan loading)
+            loading_placeholder.empty()
+            
+            # 4. Tampilkan hasil (seperti sebelumnya)
+            waktu_proses = end_time - start_time
+            st.session_state.teks_output = hasil
+            st.session_state.info_proses = f"Ringkasan dihasilkan dalam {waktu_proses:.2f} detik. {info}"
+        
+        except Exception as e:
+            # 5. Pastikan wadah juga dikosongkan jika ada error
+            loading_placeholder.empty() 
+            
+            # Menampilkan pesan error (sesuai Skenario IV-9, Alternatif 2b)
+            st.session_state.error = f"Terjadi kesalahan saat memproses ringkasan: {str(e)}"
+            st.error(st.session_state.error)
 
     def _handle_upload_pdf(self, file_pdf):
         # Method ini dipanggil saat file PDF di-upload
